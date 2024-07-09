@@ -1,0 +1,14 @@
+.gridCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.gridContCat {
+  display: flex;
+  flex-direction: row;
+
+  .Category {
+    padding-top: rem(6px);
+  }
+}

@@ -1,0 +1,15 @@
+.logo {
+  color: light-dark(#121114, #fff);
+}
+
+.moUILogo {
+  @mixin light {
+    --mo-logo-fill: #121114;
+    --mo-logo-color: #fff;
+  }
+
+  @mixin dark {
+    --mo-logo-fill: #fff;
+    --mo-logo-color: #121114;
+  }
+}
