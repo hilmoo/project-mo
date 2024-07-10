@@ -1,0 +1,11 @@
+.headd {
+  position: sticky;
+  z-index: 10;
+  top: rem(0px);
+}
+
+.sidee {
+  position: sticky;
+  z-index: 10;
+  top: rem(74px);
+}
