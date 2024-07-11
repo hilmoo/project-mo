@@ -8,7 +8,7 @@ import {
   Text,
 } from "@mantine/core";
 import { Link } from "@remix-run/react";
-import { Competition } from "../../infolomba/interface";
+import { Competition } from "../../infolomba/context";
 import classes from "./Card.module.css";
 
 export function CardLomba(data: Competition) {

@@ -16,13 +16,13 @@ import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
 import classes from "./Filter.module.css";
 
 const data = [
-  { id: "AI", name: "Artificial Intelligence" },
-  { id: "Cyber", name: "Cyber Security" },
-  { id: "Webdev", name: "Web Development" },
-  { id: "Data", name: "Data Science" },
-  { id: "Design", name: "Design" },
-  { id: "Mobiledev", name: "Mobile Development" },
-  { id: "Game", name: "Game Development" },
+  { id: 1, name: "Artificial Intelligence" },
+  { id: 2, name: "Cyber Security" },
+  { id: 3, name: "Web Development" },
+  { id: 4, name: "Data Science" },
+  { id: 5, name: "Design" },
+  { id: 6, name: "Mobile Development" },
+  { id: 7, name: "Game Development" },
 ];
 
 function Search({ onChange }: { onChange: (value: string) => void }) {

@@ -1,6 +1,7 @@
-import { LoaderFunctionArgs } from "react-router-dom";
-import { json } from "@remix-run/node";
-import { Competition } from "../infolomba/interface";
+import { json, LoaderFunctionArgs } from "@remix-run/node";
+import dayjs from "dayjs";
+
+import { Competition } from "../infolomba/context";
 
 async function fetchData(url: string) {
   const response = await fetch(url);
@@ -10,6 +11,9 @@ async function fetchData(url: string) {
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const url = `http://localhost:8000/items/${params.competitionId}`;
-  const datas: Competition = await fetchData(url);
-  return json(datas);
+  const data: Competition = await fetchData(url);
+  data.deadlineSTR = new Date(
+    dayjs.unix(data.deadline).toISOString(),
+  ).toLocaleString();
+  return json(data);
 }

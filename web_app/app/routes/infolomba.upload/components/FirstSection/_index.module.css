@@ -1,0 +1,15 @@
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid
+    light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  margin: 0 10px;
+}

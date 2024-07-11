@@ -1,6 +1,7 @@
 import { json } from "@remix-run/node";
-import { DateTime } from "luxon";
-import { CompetitionArray } from "../infolomba/interface";
+import dayjs from "dayjs";
+
+import { CompetitionArray } from "../infolomba/context";
 
 async function fetchData() {
   const response = await fetch("http://localhost:8000/home");
@@ -14,7 +15,9 @@ export async function loader() {
     (item: { deadline: number; deadlineSTR: string }) => {
       return {
         ...item,
-        deadlineSTR: DateTime.fromSeconds(item.deadline).toLocaleString(),
+        deadlineSTR: new Date(
+          dayjs.unix(item.deadline).toISOString(),
+        ).toLocaleString(),
       };
     },
   );

@@ -1,5 +1,3 @@
-import type { MetaFunction } from "@remix-run/node";
-
 import {
   Button,
   Card,
@@ -7,17 +5,10 @@ import {
   Group,
   useMantineColorScheme,
 } from "@mantine/core";
-
 import { Link } from "@remix-run/react";
+
 import GridPatternProps from "~/components/animateUI/GridBG";
 import TypingAnimation from "~/components/animateUI/typingAnimation";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Hilmo" },
-    { name: "index", content: "Hello World" },
-  ];
-};
 
 export default function Index() {
   const { setColorScheme } = useMantineColorScheme();

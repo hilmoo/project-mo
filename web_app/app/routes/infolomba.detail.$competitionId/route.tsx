@@ -7,7 +7,9 @@ import { ImageSec } from "./components/ImageSec";
 import { Tail } from "./components/Tail";
 
 import { loader as detailLoader, loader } from "./loader";
+import { meta as detailMeta } from "./meta";
 export { detailLoader as loader };
+export { detailMeta as meta };
 
 export default function Detail() {
   const data = useLoaderData<typeof loader>();
@@ -30,7 +32,7 @@ export default function Detail() {
           <Grid.Col span={{ base: 10, lg: 12 }}>
             <Header
               organizer={data.organizer}
-              deadline={data.deadline}
+              deadline={data.deadlineSTR}
               category={data.category}
             />
           </Grid.Col>

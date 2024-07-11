@@ -1,5 +1,4 @@
 import { Badge, Grid, Group, ScrollArea, Stack, Text } from "@mantine/core";
-import moment from "moment";
 
 import classes from "./Header.module.css";
 
@@ -9,10 +8,9 @@ export function Header({
   category,
 }: {
   organizer: string;
-  deadline: number;
+  deadline: string;
   category: Array<string>;
 }) {
-  const localTimeDeadline = moment.unix(deadline).toDate().toLocaleString();
   const badgeCategory = category.map((item) => (
     <Badge size="md" key={item}>
       {item}
@@ -29,10 +27,14 @@ export function Header({
           gap="xs"
         >
           <Text size="lg">Penyelenggara: {organizer}</Text>
-          <Text size="lg">Deadline: {localTimeDeadline}</Text>
+          <Text size="lg">Deadline: {deadline}</Text>
         </Stack>
       </Grid.Col>
-      <Grid.Col span={{ base: 12, lg: 7 }} className={classes.gridContCat} h={{ base: 50, md:"auto", lg: "auto" }}>
+      <Grid.Col
+        span={{ base: 12, lg: 7 }}
+        className={classes.gridContCat}
+        h={{ base: 50, md: "auto", lg: "auto" }}
+      >
         <Text size="lg" pr="md">
           Kategori:
         </Text>

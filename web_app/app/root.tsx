@@ -1,5 +1,7 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "@mantine/dropzone/styles.css";
 import "./tailwind.css";
 
 import {
@@ -13,8 +15,8 @@ import {
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Infolomba" },
-    { name: "infolomba hilmo", content: "berisikan info info lomba" },
+    { title: "Virramat" },
+    { name: "project virramat", content: "made by hilmo for everyone" },
   ];
 };
 

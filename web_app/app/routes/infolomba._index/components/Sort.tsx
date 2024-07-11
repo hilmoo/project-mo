@@ -12,10 +12,10 @@ import { useState } from "react";
 import classes from "./Sort.module.css";
 
 const sorts = [
-  "Paling Baru",
-  "Paling Lama",
   "Deadline Terdekat",
   "Deadline Terjauh",
+  "Paling Baru",
+  "Paling Lama",
 ];
 
 export function Sort({
@@ -36,7 +36,7 @@ export function Sort({
     },
   });
 
-  const [value, setValue] = useState<string>("Paling Baru");
+  const [value, setValue] = useState<string>("Deadline Terdekat");
   const matcheslg = useMediaQuery("(min-width: 75em)");
 
   const options = sorts.map((item) => (
