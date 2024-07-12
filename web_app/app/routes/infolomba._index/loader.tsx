@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import dayjs from "dayjs";
 
-import { CompetitionArray } from "../infolomba/context";
+import { CompetitionArray } from "types/infolomba";
 
 async function fetchData() {
   const response = await fetch("http://localhost:8000/home");

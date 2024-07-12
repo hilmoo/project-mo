@@ -11,3 +11,13 @@ export interface Competition {
 }
 
 export interface CompetitionArray extends Array<Competition> {}
+
+export interface CompetitionForm {
+  name: string;
+  organizer: string;
+  deadline: string;
+  url: string;
+  description: string;
+  image: File[];
+  category: Array<string>;
+}

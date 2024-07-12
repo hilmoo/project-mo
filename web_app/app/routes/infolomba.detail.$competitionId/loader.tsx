@@ -1,7 +1,7 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import dayjs from "dayjs";
 
-import { Competition } from "../infolomba/context";
+import { Competition } from "types/infolomba";
 
 async function fetchData(url: string) {
   const response = await fetch(url);
