@@ -8,7 +8,7 @@ from app.config import PROD_ORIGINS
 from app.config.firebase import cred, databaseURL, storageBucket
 from app.routes import infolomba
 
-app = FastAPI(docs_url="/doc", redoc_url=None)
+app = FastAPI(docs_url=None, redoc_url=None)
 firebase_admin.initialize_app(
     cred, {"storageBucket": storageBucket, "databaseURL": databaseURL}
 )
