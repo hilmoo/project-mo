@@ -2,25 +2,22 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/dropzone/styles.css";
+import "@mantine/tiptap/styles.css";
 import "./tailwind.css";
 
 import {
+  isRouteErrorResponse,
   Links,
   Meta,
-  MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
 } from "@remix-run/react";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Virramat" },
-    { name: "project virramat", content: "made by hilmo for everyone" },
-  ];
-};
+import { NotFoundTitle } from "~/components/404";
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const error = useRouteError();
   return (
     <html lang="en">
       <head>
@@ -31,7 +28,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider>
+          {isRouteErrorResponse(error) ? <NotFoundTitle /> : children}
+        </MantineProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

@@ -8,13 +8,14 @@ import {
   Text,
 } from "@mantine/core";
 import { Link } from "@remix-run/react";
+
 import { Competition } from "types/infolomba";
 import classes from "./Card.module.css";
 
 export function CardLomba(data: Competition) {
   const category = data.category.map((item) => (
-    <Badge px={5} size="md" key={item}>
-      {item}
+    <Badge px={5} size="md" key={item.id}>
+      {item.name}
     </Badge>
   ));
 
@@ -28,7 +29,7 @@ export function CardLomba(data: Competition) {
     >
       <Card.Section>
         <AspectRatio ratio={1080 / 1350}>
-          <Image src={data.image} fit="contain" />
+          <Image loading="lazy" src={data.image} fit="contain" />
         </AspectRatio>
       </Card.Section>
 
@@ -57,7 +58,7 @@ export function CardLomba(data: Competition) {
 
       <ScrollArea type="never">
         <Text size="xs" tt="capitalize" fw={200} className={classes.cardText}>
-          Deadline: {data.deadlineSTR}
+          Deadline: {data.deadline}
         </Text>
       </ScrollArea>
     </Card>

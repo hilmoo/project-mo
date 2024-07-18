@@ -1,5 +1,5 @@
 import { Alert, Center, Group, Text, rem } from "@mantine/core";
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import {
   IconInfoCircle,
   IconPhoto,
@@ -9,7 +9,7 @@ import {
 
 import { useCompetitonFormContext } from "../../formContext";
 
-export function DropZone({nextStep}:{nextStep: () => void}){
+export function DropZone({ nextStep }: { nextStep: () => void }) {
   const form = useCompetitonFormContext();
 
   return (
@@ -32,7 +32,7 @@ export function DropZone({nextStep}:{nextStep: () => void}){
         }}
         onReject={() => form.setFieldError("image", "Gambar tidak valid")}
         maxSize={5 * 1024 ** 2}
-        accept={IMAGE_MIME_TYPE}
+        accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
         w={"100%"}
         key={form.key("image")}
       >
@@ -79,7 +79,7 @@ export function DropZone({nextStep}:{nextStep: () => void}){
             </Text>
             <Center>
               <Text size="sm" c="dimmed" inline mt={7}>
-                (Maksimal 5MB, hanya menerima gambar)
+                (Maksimal 5MB, hanya menerima gambar PNG, JPG, JPEG)
               </Text>
             </Center>
           </div>

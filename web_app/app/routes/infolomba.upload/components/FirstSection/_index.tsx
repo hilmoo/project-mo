@@ -18,7 +18,7 @@ export function FirstSection({ nextStep }: { nextStep: () => void }) {
       >
         <DropZone nextStep={nextStep} />
         <div className={classes.divider}>atau</div>
-        <InstagramInput />
+        <InstagramInput nextStep={nextStep} />
       </Flex>
     </>
   );

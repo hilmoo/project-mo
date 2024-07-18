@@ -23,6 +23,7 @@ export function SecondSection() {
         {...form.getInputProps("organizer")}
       />
       <DateTimePicker
+        valueFormat="DD MMM YYYY HH:mm"
         withAsterisk
         label="Deadline Pendaftaran"
         placeholder="Pilih tanggal dan waktu"
@@ -41,6 +42,7 @@ export function SecondSection() {
       <Textarea
         withAsterisk
         label="Deskripsi Lomba"
+        placeholder="Tulis deskripsi lomba di sini"
         autosize
         minRows={5}
         maxRows={10}

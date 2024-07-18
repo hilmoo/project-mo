@@ -3,7 +3,12 @@ import cx from "clsx";
 import classes from "./MoLogo.module.css";
 import { LogoProps } from "./use-mo-logo-colors";
 
-export function MoLogoInfoLomba({ size, style, className, ...others }: LogoProps) {
+export function MoLogoInfoLomba({
+  size,
+  style,
+  className,
+  ...others
+}: LogoProps) {
   return (
     <svg
       {...others}

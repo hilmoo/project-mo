@@ -12,13 +12,14 @@ import { Search } from "./components/Search";
 import { Sort } from "./components/Sort";
 import classes from "./index.module.css";
 
+import dayjs from "dayjs";
 import { loader as homeLoader, loader } from "./loader";
 import { meta as homeMeta } from "./meta";
-export { homeLoader as loader };
-export { homeMeta as meta };
+export { homeLoader as loader, homeMeta as meta };
 
 export default function InfoLomba() {
-  const data = useLoaderData<typeof loader>();
+  const loadd = useLoaderData<typeof loader>();
+  const data = loadd.competition;
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("Deadline Terdekat");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -38,23 +39,23 @@ export default function InfoLomba() {
     if (selectedCategories.length > 0) {
       selectedCategories.forEach((category) => {
         results = matchSorter(results, category, {
-          keys: ["category"],
+          keys: ["category.*.name"],
         });
       });
     }
 
     switch (sortOrder) {
       case "Deadline Terdekat":
-        results = sort(results).asc((x) => x.deadline);
+        results = sort(results).asc((x) => x.deadlineUnix);
         break;
       case "Deadline Terjauh":
-        results = sort(results).desc((x) => x.deadline);
+        results = sort(results).desc((x) => x.deadlineUnix);
         break;
       case "Paling Baru":
-        results = sort(results).asc((x) => x.id);
+        results = sort(results).asc((x) => dayjs(x.upload_date).unix());
         break;
       case "Paling Lama":
-        results = sort(results).desc((x) => x.id);
+        results = sort(results).desc((x) => dayjs(x.upload_date).unix());
         break;
     }
     setFilteredData(results);
@@ -68,10 +69,11 @@ export default function InfoLomba() {
       name={item.name}
       organizer={item.organizer}
       category={item.category}
-      deadline={0}
-      deadlineSTR={item.deadlineSTR}
-      url={""}
-      description={""}
+      deadline={item.deadline}
+      deadlineUnix={item.deadlineUnix}
+      url={item.url}
+      description={item.description}
+      upload_date={item.upload_date}
     />
   ));
 

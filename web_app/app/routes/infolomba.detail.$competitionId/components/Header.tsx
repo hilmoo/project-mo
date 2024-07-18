@@ -1,5 +1,5 @@
 import { Badge, Grid, Group, ScrollArea, Stack, Text } from "@mantine/core";
-
+import { Category } from "types/infolomba";
 import classes from "./Header.module.css";
 
 export function Header({
@@ -9,11 +9,11 @@ export function Header({
 }: {
   organizer: string;
   deadline: string;
-  category: Array<string>;
+  category: Array<Category>;
 }) {
   const badgeCategory = category.map((item) => (
-    <Badge size="md" key={item}>
-      {item}
+    <Badge size="md" key={item.id}>
+      {item.name}
     </Badge>
   ));
 

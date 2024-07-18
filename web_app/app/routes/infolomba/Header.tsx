@@ -20,8 +20,8 @@ export function Header() {
           aria-label="Upload Competition"
           radius="md"
           leftSection={<IconUpload size={20} stroke={2} />}
-          component={Link}
-          to={"upload"}
+          component="a"
+          href="/infolomba/upload"
         >
           <Text>Upload Lomba</Text>
         </Button>
@@ -30,8 +30,8 @@ export function Header() {
           size="xl"
           aria-label="Upload Competition"
           radius="md"
-          component={Link}
-          to={"upload"}
+          component="a"
+          href="/infolomba/upload"
         >
           <IconUpload />
         </ActionIcon>

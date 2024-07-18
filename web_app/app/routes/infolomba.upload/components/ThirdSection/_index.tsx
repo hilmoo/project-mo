@@ -5,7 +5,7 @@ import { useCompetitonFormContext } from "../../formContext";
 
 export function ThirdSection() {
   const form = useCompetitonFormContext();
-  const [files] = useState<FileWithPath[]>(form.getValues().image);
+  const [files] = useState<FileWithPath[]>(form.getValues().image || []);
 
   const previews = files.map((file, index) => {
     const imageUrl = URL.createObjectURL(file);
@@ -17,6 +17,7 @@ export function ThirdSection() {
       />
     );
   });
+  const instagram = form.getValues().img_url;
 
   const dataPreview = [
     {
@@ -45,16 +46,22 @@ export function ThirdSection() {
     },
     {
       key: "Preview Poster",
-      value: previews,
+      value: previews ? instagram : previews,
     },
   ];
 
   const items = dataPreview.map((item) => (
     <Accordion.Item key={item.key} value={item.key}>
       <Accordion.Control>{item.key}</Accordion.Control>
-      <Accordion.Panel>{item.value}</Accordion.Panel>
+      <Accordion.Panel>
+        <div style={{ whiteSpace: "pre-wrap" }}>{item.value}</div>
+      </Accordion.Panel>
     </Accordion.Item>
   ));
 
-  return <Accordion defaultValue={"Nama Lomba"}>{items}</Accordion>;
+  return (
+    <>
+      <Accordion defaultValue={"Nama Lomba"}>{items}</Accordion>
+    </>
+  );
 }

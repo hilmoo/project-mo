@@ -1,12 +1,14 @@
 import { Outlet } from "@remix-run/react";
-import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { Header } from "./Header";
 
 export default function infolomba() {
   return (
     <>
       <Header />
-      <Outlet />
+      <div style={{ minHeight: "75vh" }}>
+        <Outlet />
+      </div>
       <Footer />
     </>
   );

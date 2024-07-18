@@ -1,32 +1,44 @@
-import { Button, Container, Group, Stepper } from "@mantine/core";
-import { Form } from "@remix-run/react";
+import { Alert, Button, Container, Group, Stack, Stepper } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { Form, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 
+import { CompetitionForm } from "types/infolomba";
 import { FirstSection } from "./components/FirstSection/_index";
 import { SecondSection } from "./components/SecondSection/_index";
 import { ThirdSection } from "./components/ThirdSection/_index";
 import { CompetitonFormProvider, useCompetitonForm } from "./formContext";
 
+import { IconInfoCircle } from "@tabler/icons-react";
+import { CompleteSection } from "./completeSection";
+import { handleForm } from "./formAction";
+import { loader, loader as uploadLoader } from "./loader";
 import { meta as uploadMeta } from "./meta";
-export { uploadMeta as meta };
+export { uploadLoader as loader, uploadMeta as meta };
 
 export default function Upload() {
+  const loadd = useLoaderData<typeof loader>();
   const [active, setActive] = useState(0);
-
+  const [loading, { open, close }] = useDisclosure(false);
+  const [captcha, setCaptcha] = useState("");
+  const [failed, setFailed] = useState(false);
   const form = useCompetitonForm({
     mode: "uncontrolled",
+    name: "competitionForm",
     initialValues: {
       name: "",
       organizer: "",
-      deadline: "",
+      deadline: new Date(),
       url: "",
       description: "",
       image: [],
       category: [],
+      img_url: "",
     },
     validate: (values) => {
       const imageError =
-        values.image.length == 0
+        values.image?.length === 0 && values.img_url?.trim().length === 0
           ? "Input gambar atau impor melalui Instagram"
           : null;
       const nameError =
@@ -74,40 +86,68 @@ export default function Upload() {
       return current < 3 ? current + 1 : current;
     });
 
+  const handleFormSubmit = async (values: CompetitionForm) => {
+    open();
+    try {
+      await handleForm(values, loadd.endpoint, captcha);
+      nextStep();
+      setFailed(true);
+    } catch (error) {
+      close();
+      setFailed(true);
+    }
+  };
+
   return (
-    <Container py="xl" h={"80vh"} size="sm">
-      {active === 3 && (
-        <>
-          Completed, click back button to get to previous step
-          {JSON.stringify(form.getValues(), null, 2)}
-        </>
-      )}
+    <Container pt="xl" mih={"80vh"} size="sm">
       <CompetitonFormProvider form={form}>
-        {active !== 3 && (
-          <Stepper active={active} size="sm">
-            <Stepper.Step>
-              <FirstSection nextStep={nextStep} />
-            </Stepper.Step>
-            <Stepper.Step>
-              <SecondSection />
-            </Stepper.Step>
-            <Stepper.Step>
-              <ThirdSection />
-            </Stepper.Step>
-          </Stepper>
-        )}
+        <Stepper active={active} size="sm">
+          <Stepper.Step>
+            <FirstSection nextStep={nextStep} />
+          </Stepper.Step>
+          <Stepper.Step>
+            <SecondSection />
+          </Stepper.Step>
+          <Stepper.Step>
+            <ThirdSection />
+            {failed && (
+              <Alert
+                variant="light"
+                color="red"
+                title="Oops.. Something went wrong. "
+                icon={<IconInfoCircle />}
+              >
+                Please try again or open an issue at{" "}
+                <a href="https://github.com/hilmoo/project-mo/issues/new">
+                  https://github.com/hilmoo/project-mo/issues/new
+                </a>
+              </Alert>
+            )}
+          </Stepper.Step>
+          <Stepper.Completed>
+            <CompleteSection />
+          </Stepper.Completed>
+        </Stepper>
 
         <Group justify="center" mt="xl">
           {active === 1 && <Button onClick={nextStep}>Next</Button>}
           {active === 2 && (
-            <Form method="post">
-              <Button
-                type="submit"
-                name="uploadCompetition"
-                value={JSON.stringify(form.getValues(), null, 2)}
-              >
-                Delete
-              </Button>
+            <Form method="post" onSubmit={form.onSubmit(handleFormSubmit)}>
+              <Stack>
+                <Turnstile
+                  siteKey={loadd.turnstile}
+                  onSuccess={setCaptcha}
+                  onExpire={() => setCaptcha("")}
+                />
+                <Button
+                  loading={loading}
+                  loaderProps={{ type: "dots" }}
+                  type="submit"
+                  disabled={!captcha}
+                >
+                  Upload
+                </Button>
+              </Stack>
             </Form>
           )}
         </Group>

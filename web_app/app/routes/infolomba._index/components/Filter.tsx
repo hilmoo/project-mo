@@ -12,18 +12,10 @@ import { useMediaQuery } from "@mantine/hooks";
 import { matchSorter } from "match-sorter";
 import { useState } from "react";
 
+import { useLoaderData } from "@remix-run/react";
 import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
+import { loader } from "../loader";
 import classes from "./Filter.module.css";
-
-const data = [
-  { id: 1, name: "Artificial Intelligence" },
-  { id: 2, name: "Cyber Security" },
-  { id: 3, name: "Web Development" },
-  { id: 4, name: "Data Science" },
-  { id: 5, name: "Design" },
-  { id: 6, name: "Mobile Development" },
-  { id: 7, name: "Game Development" },
-];
 
 function Search({ onChange }: { onChange: (value: string) => void }) {
   const icon = <IconSearch stroke={1.5} />;
@@ -49,6 +41,8 @@ export function Filter({
   opened: boolean;
   close: () => void;
 }) {
+  const loadd = useLoaderData<typeof loader>();
+  const data = loadd.category;
   const [searchValue, setSearchValue] = useState<string>("");
   const filteredData = matchSorter(data, searchValue, { keys: ["name"] });
   const matcheslg = useMediaQuery("(min-width: 75em)");

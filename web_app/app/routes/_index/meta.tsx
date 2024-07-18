@@ -2,10 +2,10 @@ import { MetaFunction } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Upload Lomba" },
+    { title: "Mo" },
     {
       property: "og:title",
-      content: `Upload Lomba`,
+      content: `Hello dari Mo`,
     },
     {
       property: "og:type",
@@ -14,7 +14,7 @@ export const meta: MetaFunction = () => {
     {
       property: "og:image",
       content:
-        "https://raw.githubusercontent.com/hilmoo/hilmoo/main/public_logo/infolomba.png",
+        "https://raw.githubusercontent.com/hilmoo/hilmoo/main/public_logo/logotext.png",
     },
     {
       property: "og:image:width",
@@ -22,7 +22,7 @@ export const meta: MetaFunction = () => {
     },
     {
       property: "og:url",
-      content: `https://hilmo.my.id/infolomba/upload`,
+      content: `https://hilmo.my.id/`,
     },
     {
       name: "twitter:card",
@@ -30,7 +30,7 @@ export const meta: MetaFunction = () => {
     },
     {
       property: "og:description",
-      content: `Upload lombamu disini, dan bantu orang lain menemukan lombamu`,
+      content: `Jadi gini... ya udah gitu aja`,
     },
     {
       property: "og:site_name",

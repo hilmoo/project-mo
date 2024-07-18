@@ -10,6 +10,9 @@ import { Link } from "@remix-run/react";
 import GridPatternProps from "~/components/animateUI/GridBG";
 import TypingAnimation from "~/components/animateUI/typingAnimation";
 
+import { meta as IndexMeta } from "./meta";
+export { IndexMeta as meta };
+
 export default function Index() {
   const { setColorScheme } = useMantineColorScheme();
 

@@ -2,10 +2,9 @@ import { ActionIcon, Anchor, Container, Group, rem } from "@mantine/core";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { MoLogo } from "~/components/MoLogo/MoLogo";
 import classes from "./Footer.module.css";
-import { Link } from "@remix-run/react";
 
 const links = [
-  { link: "https://github.com/hilmoo/virramat-project", label: "Source Code" },
+  { link: "https://github.com/hilmoo/project-mo", label: "Source Code" },
 ];
 
 export function Footer() {
@@ -14,8 +13,9 @@ export function Footer() {
       c="dimmed"
       key={link.label}
       href={link.link}
+      target="_blank"
+      component="a"
       lh={1}
-      onClick={(event) => event.preventDefault()}
       size="sm"
     >
       {link.label}
@@ -26,9 +26,9 @@ export function Footer() {
     <div className={classes.footer}>
       <Container size="xl">
         <div className={classes.inner}>
-          <Link to="/">
+          <a href="/">
             <MoLogo size={28} />
-          </Link>
+          </a>
 
           <Group className={classes.links}>{items}</Group>
 
@@ -38,6 +38,7 @@ export function Footer() {
               variant="default"
               radius="xl"
               component="a"
+              target="_blank"
               href="https://github.com/hilmoo"
             >
               <IconBrandGithub

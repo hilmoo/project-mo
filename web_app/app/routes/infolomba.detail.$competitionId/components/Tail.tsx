@@ -5,7 +5,14 @@ export function Tail({ url }: { url: string }) {
   const icon = <IconSend2 stroke={2} />;
   return (
     <Center py="md">
-      <Button fullWidth size="lg" rightSection={icon} component="a" href={url}>
+      <Button
+        fullWidth
+        size="lg"
+        rightSection={icon}
+        component="a"
+        href={url}
+        target="_blank"
+      >
         Daftar Lomba
       </Button>
     </Center>

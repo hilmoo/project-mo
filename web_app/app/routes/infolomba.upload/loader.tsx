@@ -1,19 +1,26 @@
-import { ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/react";
+import axios from "axios";
+import { env } from "~/env.server";
 
-export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const values = JSON.parse(formData.get("uploadCompetition") as string);
+import { Category, loaderUpload } from "~/types/infolomba";
 
-  const response = await fetch("https://your-backend-api/endpoint", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(values),
-  });
+export async function loader() {
+  try {
+    const response_category = await axios(
+      `${env.API_ENDPOINT}infolomba/category`,
+    );
+    const categoryArray: Array<Category> = response_category.data;
+    const endpoint = env.API_ENDPOINT ?? "";
+    const turnstile = env.TURNSTILE_SITE_KEY ?? "";
 
-  const result = await response.json();
-
-  return json(result);
+    const loadd: loaderUpload = {
+      categoryArray: categoryArray,
+      endpoint: endpoint,
+      turnstile: turnstile,
+    };
+    return json(loadd);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw new Response("Failed to load data", { status: 500 });
+  }
 }

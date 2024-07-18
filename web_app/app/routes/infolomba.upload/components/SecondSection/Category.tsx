@@ -6,21 +6,21 @@ import {
   PillsInput,
   useCombobox,
 } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { useLoaderData } from "@remix-run/react";
+import { sort } from "fast-sort";
 import { useCompetitonFormContext } from "../../formContext";
-
-const category = [
-  { id: 1, name: "Artificial Intelligence" },
-  { id: 2, name: "Cyber Security" },
-  { id: 3, name: "Web Development" },
-  { id: 4, name: "Data Science" },
-  { id: 5, name: "Design" },
-  { id: 6, name: "Mobile Development" },
-  { id: 7, name: "Game Development" },
-];
+import { loader } from "../../loader";
 
 export function Category() {
+  const loadd = useLoaderData<typeof loader>();
+  const [categorys, setCategorys] = useState(loadd.categoryArray);
+  useEffect(() => {
+    let result = categorys;
+    result = sort(result).asc((x) => x.name);
+    setCategorys(result);
+  }, [categorys]);
   const form = useCompetitonFormContext();
 
   const combobox = useCombobox({
@@ -29,23 +29,26 @@ export function Category() {
   });
 
   const [search, setSearch] = useState("");
-  const [value, setValue] = useState<string[]>(form.getValues().category);
+  const [value, setValue] = useState(Array<string>());
 
-  const handleValueSelect = (val: string) =>
-    setValue((current) => {
-      const newValue = current.includes(val)
-        ? current.filter((v) => v !== val)
-        : [...current, val];
-      form.setFieldValue("category", newValue);
-      return newValue;
-    });
+  const handleValueSelect = (val: string) => {
+    const newValue = value.includes(val)
+      ? value.filter((v) => v !== val)
+      : [...value, val];
+    setValue(newValue);
+    form.setFieldValue("category", newValue);
+  };
 
-  const handleValueRemove = (val: string) =>
+  const handleValueRemove = (val: string) => {
     setValue((current) => {
       const updatedValue = current.filter((v) => v !== val);
-      form.setFieldValue("category", updatedValue);
       return updatedValue;
     });
+    form.setFieldValue(
+      "category",
+      value.filter((v) => v !== val),
+    );
+  };
 
   const values = value.map((item) => (
     <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(item)}>
@@ -53,7 +56,7 @@ export function Category() {
     </Pill>
   ));
 
-  const options = category
+  const options = categorys
     .filter((item) =>
       item.name.toLowerCase().includes(search.trim().toLowerCase()),
     )
