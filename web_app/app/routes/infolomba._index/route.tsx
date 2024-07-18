@@ -21,7 +21,7 @@ export default function InfoLomba() {
   const loadd = useLoaderData<typeof loader>();
   const data = loadd.competition;
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("Deadline Terdekat");
+  const [sortOrder, setSortOrder] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [filteredData, setFilteredData] = useState(data);
   const [opened, { open, close }] = useDisclosure(false);
@@ -44,19 +44,16 @@ export default function InfoLomba() {
       });
     }
 
-    switch (sortOrder) {
-      case "Deadline Terdekat":
-        results = sort(results).asc((x) => x.deadlineUnix);
-        break;
-      case "Deadline Terjauh":
-        results = sort(results).desc((x) => x.deadlineUnix);
-        break;
-      case "Paling Baru":
-        results = sort(results).asc((x) => dayjs(x.upload_date).unix());
-        break;
-      case "Paling Lama":
-        results = sort(results).desc((x) => dayjs(x.upload_date).unix());
-        break;
+    if (sortOrder === "Deadline Terdekat") {
+      results = sort(results).asc((x) => x.deadlineUnix);
+    } else if (sortOrder === "Deadline Terjauh") {
+      results = sort(results).desc((x) => x.deadlineUnix);
+    } else if (sortOrder === "Paling Baru") {
+      results = sort(results).asc((x) => dayjs(x.upload_date).unix());
+    } else if (sortOrder === "Paling Lama") {
+      results = sort(results).desc((x) => dayjs(x.upload_date).unix());
+    } else {
+      setSortOrder("Deadline Terdekat");
     }
     setFilteredData(results);
   }, [data, searchTerm, selectedCategories, sortOrder]);

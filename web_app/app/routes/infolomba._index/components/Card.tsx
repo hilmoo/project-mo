@@ -28,7 +28,7 @@ export function CardLomba(data: Competition) {
     >
       <Card.Section>
         <AspectRatio ratio={1080 / 1350}>
-          <Image loading="lazy" src={data.image} fit="contain" />
+          <Image src={data.image} fit="contain" />
         </AspectRatio>
       </Card.Section>
 

@@ -41,7 +41,7 @@ export default function Detail() {
           <Grid.Col span={{ base: 12, lg: 6 }}>
             <DescSec description={data.description} />
           </Grid.Col>
-          <Grid.Col span={{ base: 6, lg: 12 }}>
+          <Grid.Col span={12}>
             <Tail url={data.url} />
           </Grid.Col>
         </Grid>

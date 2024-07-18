@@ -40,7 +40,7 @@ export function Header({
         </Text>
         <ScrollArea
           type="auto"
-          h={classes.Category.length < 15 ? 50 : 70}
+          h={{ md: 50, lg: 70 }}
           scrollbars="y"
           className={classes.Category}
         >
