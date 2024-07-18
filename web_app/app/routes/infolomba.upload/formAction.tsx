@@ -7,7 +7,6 @@ export async function handleForm(
   endpoint: string,
   captcha_key: string,
 ) {
-  console.log(data.image);
   const form = new FormData();
   form.append(
     "data",
