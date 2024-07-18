@@ -1,8 +1,8 @@
-fastapi == "^0.111.0"
-firebase-admin == "^6.5.0"
-pydantic == "^2.8.2"
-google-cloud-firestore == "^2.16.1"
-boto3 == "^1.34.144"
-pillow == "^10.4.0"
-google-generativeai == "^0.7.2"
-instaloader == "^4.12"
+fastapi
+firebase-admin
+pydantic
+google-cloud-firestore
+boto3
+pillow
+google-generativeai
+instaloader
