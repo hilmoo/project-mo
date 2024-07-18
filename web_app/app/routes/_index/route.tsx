@@ -5,7 +5,6 @@ import {
   Group,
   useMantineColorScheme,
 } from "@mantine/core";
-import { Link } from "@remix-run/react";
 
 import GridPatternProps from "~/components/animateUI/GridBG";
 import TypingAnimation from "~/components/animateUI/typingAnimation";
@@ -32,11 +31,11 @@ export default function Index() {
             className="inline-block bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-center text-7xl font-extrabold text-transparent"
           />
           <Group>
-            <Link to="infolomba">
+            <a href="infolomba">
               <Button variant="light" size="xl" radius="xl">
                 Info Lomba
               </Button>
-            </Link>
+            </a>
           </Group>
           <Group>
             <Button onClick={() => setColorScheme("light")}>Light</Button>

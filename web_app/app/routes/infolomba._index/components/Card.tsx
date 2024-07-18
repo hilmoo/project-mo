@@ -7,7 +7,6 @@ import {
   ScrollArea,
   Text,
 } from "@mantine/core";
-import { Link } from "@remix-run/react";
 
 import { Competition } from "types/infolomba";
 import classes from "./Card.module.css";
@@ -22,9 +21,9 @@ export function CardLomba(data: Competition) {
   return (
     <Card
       shadow="sm"
-      component={Link}
+      component="a"
       key={data.id}
-      to={`detail/${data.id}`}
+      href={`infolomba/detail/${data.id}`}
       className={classes.card}
     >
       <Card.Section>
