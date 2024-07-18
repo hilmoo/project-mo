@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 
 import instaloader
 from fastapi import APIRouter, Body, File, Response, status, UploadFile
-from firebase_admin import db, firestore
+from firebase_admin import db, firestore, firestore_async
 from google.cloud.firestore_v1.base_query import FieldFilter
 from PIL import Image
 import requests
@@ -44,7 +44,6 @@ router = APIRouter(
     description="Endpoint to get Competition objects in bulk",
 )
 async def read_home() -> OkResponseCompetitionArr:
-    data = []
     field_filter = FieldFilter("deadline", ">=", datetime.now(timezone.utc))
 
     docs = (
@@ -52,15 +51,12 @@ async def read_home() -> OkResponseCompetitionArr:
         .collection(FirebaseConfig.COLLECTION_INFOLOMBA)
         .where(filter=field_filter)
         .order_by("deadline")
-        .get()
+        .stream()
     )
-    for doc in docs:
-        data.append(doc.to_dict())
 
+    data = [doc.to_dict() for doc in docs]
     competition = CompetitionArr(data)
-    return OkResponseCompetitionArr(
-        success=True, data=competition.model_dump()
-    ).model_dump()
+    return OkResponseCompetitionArr(success=True, data=competition.model_dump())
 
 
 @router.get(
