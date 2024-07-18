@@ -16,11 +16,16 @@ import { loader } from "../../loader";
 export function Category() {
   const loadd = useLoaderData<typeof loader>();
   const [categorys, setCategorys] = useState(loadd.categoryArray);
+  const [isSorted, setIsSorted] = useState(false);
+
   useEffect(() => {
-    let result = categorys;
-    result = sort(result).asc((x) => x.name);
-    setCategorys(result);
-  }, [categorys]);
+    if (!isSorted) {
+      let result = [...categorys];
+      result = sort(result).asc((x) => x.name);
+      setCategorys(result);
+      setIsSorted(true);
+    }
+  }, [isSorted, categorys]);
   const form = useCompetitonFormContext();
 
   const combobox = useCombobox({

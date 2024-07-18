@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Container, Group, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Link, useLocation } from "@remix-run/react";
+import { useLocation } from "@remix-run/react";
 import { IconUpload } from "@tabler/icons-react";
 import { MoLogo } from "~/components/MoLogo/MoLogo";
 
@@ -41,9 +41,9 @@ export function Header() {
     <header className={classes.header}>
       <Container size="xl">
         <div className={classes.inner}>
-          <Link to="">
+          <a href="/infolomba">
             <MoLogo size={40} type={matchessm ? "infolomba" : "mini"} />
-          </Link>
+          </a>
           <Group>
             {uploadButton}
             <ToggleColorSmall />

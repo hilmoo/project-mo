@@ -232,9 +232,7 @@ async def upload_competition(
         "upload_date": datetime.now(),
     }
     try:
-        await (
-            firestore.client().collection(FirebaseConfig.COLLECTION_INFOLOMBA).add(data)
-        )
+        firestore.client().collection(FirebaseConfig.COLLECTION_INFOLOMBA).add(data)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return ErrorResponse(success=False, errors=[str(e)]).model_dump()
