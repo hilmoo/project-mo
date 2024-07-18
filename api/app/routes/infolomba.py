@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 
 import instaloader
 from fastapi import APIRouter, Body, File, Response, status, UploadFile
-from firebase_admin import db, firestore_async
+from firebase_admin import db, firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
 from PIL import Image
 import requests
@@ -48,7 +48,7 @@ async def read_home() -> OkResponseCompetitionArr:
     field_filter = FieldFilter("deadline", ">=", datetime.now(timezone.utc))
 
     docs = (
-        await firestore_async.client()
+        firestore.client()
         .collection(FirebaseConfig.COLLECTION_INFOLOMBA)
         .where(filter=field_filter)
         .order_by("deadline")
@@ -76,7 +76,7 @@ async def read_competition(
     field_filter = FieldFilter("id", "==", competition_id)
 
     docs = (
-        await firestore_async.client()
+        firestore.client()
         .collection(FirebaseConfig.COLLECTION_INFOLOMBA)
         .where(filter=field_filter)
         .order_by("deadline")
@@ -233,9 +233,7 @@ async def upload_competition(
     }
     try:
         await (
-            firestore_async.client()
-            .collection(FirebaseConfig.COLLECTION_INFOLOMBA)
-            .add(data)
+            firestore.client().collection(FirebaseConfig.COLLECTION_INFOLOMBA).add(data)
         )
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -323,7 +321,7 @@ async def clear_competition(
 
     field_filter = FieldFilter("deadline", "<=", datetime.now(timezone.utc))
     docs = (
-        await firestore_async.client()
+        firestore.client()
         .collection(FirebaseConfig.COLLECTION_INFOLOMBA)
         .where(filter=field_filter)
         .get()
@@ -335,9 +333,9 @@ async def clear_competition(
             Key=data.image.split("r2.hilmo.my.id/")[-1], Bucket=R2Config.BUCKET
         )
 
-        await firestore_async.client().collection(
-            FirebaseConfig.COLLECTION_INFOLOMBA
-        ).document(doc.id).delete()
+        firestore.client().collection(FirebaseConfig.COLLECTION_INFOLOMBA).document(
+            doc.id
+        ).delete()
 
     return OkResponse(
         success=True, message=[f"succsess delete {len(docs)} competition"]
