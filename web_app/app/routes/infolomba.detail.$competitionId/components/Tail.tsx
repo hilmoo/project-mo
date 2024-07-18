@@ -8,9 +8,10 @@ export function Tail({ url }: { url: string }) {
       <Button
         fullWidth
         size="lg"
+        maw={700}
         rightSection={icon}
         component="a"
-        href={url}
+        href={`${url.startsWith("http://") || url.startsWith("https://") ? "" : "https://"}${url}`}
         target="_blank"
       >
         Daftar Lomba
