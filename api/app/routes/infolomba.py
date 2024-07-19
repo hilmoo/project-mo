@@ -10,7 +10,7 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 from PIL import Image
 import requests
 
-from app.config import HARDCODED_SECRET, FirebaseConfig, R2Config
+from app.config import HARDCODED_SECRET, FirebaseConfig, R2Config, firebase
 from app.config.cloudflareR2 import r2
 from app.config.gemini import get_competition_data
 from app.func.infolomba import (
@@ -25,6 +25,7 @@ from app.models.infolomba import (
     CompetitionArr,
     CompetitionForm,
     CompetitionGemini,
+    CompetitionSimple,
     OkResponseCompetitionGemini,
     OkResponseCompetition,
     OkResponseCompetitionArr,
@@ -44,19 +45,24 @@ router = APIRouter(
     description="Endpoint to get Competition objects in bulk",
 )
 async def read_home() -> OkResponseCompetitionArr:
-    field_filter = FieldFilter("deadline", ">=", datetime.now(timezone.utc))
+    now = datetime.now(timezone.utc)
 
+    # Perform Firestore query
     docs = (
         firestore.client()
         .collection(FirebaseConfig.COLLECTION_INFOLOMBA)
-        .where(filter=field_filter)
+        .where("deadline", ">=", now)
         .order_by("deadline")
         .stream()
     )
 
-    data = [doc.to_dict() for doc in docs]
-    competition = CompetitionArr(data)
-    return OkResponseCompetitionArr(success=True, data=competition.model_dump())
+    competitions = [CompetitionSimple(**doc.to_dict()) for doc in docs]
+    competition_arr = CompetitionArr(root=competitions)
+
+    return OkResponseCompetitionArr(
+        success=True,
+        data=competition_arr,
+    )
 
 
 @router.get(

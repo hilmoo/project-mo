@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from pydantic import BaseModel, model_validator, RootModel
+from pydantic import BaseModel, Field, model_validator, RootModel
 
 
 class Category(BaseModel):
@@ -26,8 +26,18 @@ class OkResponseCompetition(BaseModel):
     data: Competition
 
 
+class CompetitionSimple(BaseModel):
+    id: str
+    name: str
+    organizer: str
+    image: str
+    category: list[Category]
+    deadline: datetime
+    upload_date: datetime
+
+
 class CompetitionArr(RootModel):
-    root: list[Competition] = []
+    root: list[CompetitionSimple]
 
 
 class OkResponseCompetitionArr(BaseModel):
