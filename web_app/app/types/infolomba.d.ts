@@ -12,10 +12,20 @@ export interface Competition {
   category: Array<Category>;
   deadline: string;
   upload_date: string;
-  deadlineUnix?: number;
 }
 
-export interface CompetitionArray extends Array<Competition> {}
+export interface CompetitionSimple {
+  id: string;
+  name: string;
+  organizer: string;
+  image: string;
+  category: Array<Category>;
+  deadline: string;
+  deadlineLocal: string;
+  upload_date: string;
+}
+
+export interface CompetitionArray extends Array<CompetitionSimple> {}
 
 export interface CompetitionForm {
   name: string;

@@ -4,6 +4,10 @@ export const meta: MetaFunction = () => {
   return [
     { title: "Upload Lomba" },
     {
+      property: "description",
+      content: "Upload lombamu disini, dan bantu orang lain menemukan lombamu",
+    },
+    {
       property: "og:title",
       content: `Upload Lomba`,
     },

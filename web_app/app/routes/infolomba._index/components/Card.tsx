@@ -8,10 +8,10 @@ import {
   Text,
 } from "@mantine/core";
 
-import { Competition } from "types/infolomba";
+import { CompetitionSimple } from "types/infolomba";
 import classes from "./Card.module.css";
 
-export function CardLomba(data: Competition) {
+export function CardLomba(data: CompetitionSimple) {
   const category = data.category.map((item) => (
     <Badge px={5} size="md" key={item.id}>
       {item.name}
@@ -28,7 +28,7 @@ export function CardLomba(data: Competition) {
     >
       <Card.Section>
         <AspectRatio ratio={1080 / 1350}>
-          <Image src={data.image} fit="contain" />
+          <Image loading="lazy" src={data.image} fit="contain" alt={data.name}/>
         </AspectRatio>
       </Card.Section>
 
@@ -57,7 +57,7 @@ export function CardLomba(data: Competition) {
 
       <ScrollArea type="never">
         <Text size="xs" tt="capitalize" fw={200} className={classes.cardText}>
-          Deadline: {data.deadline}
+          Deadline: {data.deadlineLocal}
         </Text>
       </ScrollArea>
     </Card>

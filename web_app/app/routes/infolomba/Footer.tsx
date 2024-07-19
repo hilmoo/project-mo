@@ -26,7 +26,7 @@ export function Footer() {
     <div className={classes.footer}>
       <Container size="xl">
         <div className={classes.inner}>
-          <a href="/">
+          <a href="/" aria-label="go to homepage">
             <MoLogo size={28} />
           </a>
 
@@ -40,6 +40,7 @@ export function Footer() {
               component="a"
               target="_blank"
               href="https://github.com/hilmoo"
+              aria-label="Github Account"
             >
               <IconBrandGithub
                 style={{ width: rem(18), height: rem(18) }}

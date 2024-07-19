@@ -4,6 +4,7 @@ import { loader } from "./loader";
 export const meta: MetaFunction<typeof loader> = (data) => {
   return [
     { title: `${data.data?.name} | Mo` },
+    { property: "description", content: `deadline: ${data.data?.deadline}` },
     {
       property: "og:title",
       content: `${data.data?.name} | Infolomba Mo`,

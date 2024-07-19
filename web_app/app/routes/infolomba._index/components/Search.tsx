@@ -30,6 +30,7 @@ export function Search({
             radius="xl"
             color={theme.primaryColor}
             variant="filled"
+            aria-label="search"
           >
             <IconArrowRight
               style={{ width: rem(18), height: rem(18) }}

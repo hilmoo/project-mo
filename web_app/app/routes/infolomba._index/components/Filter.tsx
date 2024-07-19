@@ -41,10 +41,9 @@ export function Filter({
   opened: boolean;
   close: () => void;
 }) {
-  const loadd = useLoaderData<typeof loader>();
-  const data = loadd.category;
+  const { categoryArray } = useLoaderData<typeof loader>();
   const [searchValue, setSearchValue] = useState<string>("");
-  const filteredData = matchSorter(data, searchValue, { keys: ["name"] });
+  const filteredData = matchSorter(categoryArray, searchValue, { keys: ["name"] });
   const matcheslg = useMediaQuery("(min-width: 75em)");
 
   const category = filteredData.map((item) => (

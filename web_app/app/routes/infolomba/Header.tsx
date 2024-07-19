@@ -42,7 +42,7 @@ export function Header() {
       <Container size="xl">
         <div className={classes.inner}>
           <a href="/infolomba">
-            <MoLogo size={40} type={matchessm ? "infolomba" : "mini"} />
+            <MoLogo size={40} type={matchessm ? "infolomba" : "mini"} aria-label="home infolomba"/>
           </a>
           <Group>
             {uploadButton}

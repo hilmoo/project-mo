@@ -1,9 +1,9 @@
 import { Container, Grid, SimpleGrid } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { useLoaderData } from "@remix-run/react";
+import { Await, useLoaderData } from "@remix-run/react";
 import { sort } from "fast-sort";
 import { matchSorter } from "match-sorter";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { CardLomba } from "./components/Card";
 import { Filter } from "./components/Filter";
@@ -12,23 +12,23 @@ import { Search } from "./components/Search";
 import { Sort } from "./components/Sort";
 import classes from "./index.module.css";
 
-import dayjs from "dayjs";
+import { JSX } from "react/jsx-runtime";
+import { CompetitionSimple } from "~/types/infolomba";
 import { loader as homeLoader, loader } from "./loader";
 import { meta as homeMeta } from "./meta";
 export { homeLoader as loader, homeMeta as meta };
 
 export default function InfoLomba() {
-  const loadd = useLoaderData<typeof loader>();
-  const data = loadd.competition;
+  const { competition } = useLoaderData<typeof loader>();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [filteredData, setFilteredData] = useState(data);
+  const [filteredData, setFilteredData] = useState(competition);
   const [opened, { open, close }] = useDisclosure(false);
   const matcheslg = useMediaQuery("(min-width: 75em)");
 
   useEffect(() => {
-    let results = data;
+    let results = competition;
 
     if (searchTerm) {
       results = matchSorter(results, searchTerm, {
@@ -45,34 +45,18 @@ export default function InfoLomba() {
     }
 
     if (sortOrder === "Deadline Terdekat") {
-      results = sort(results).asc((x) => x.deadlineUnix);
+      results = sort(results).asc((x) => x.deadline);
     } else if (sortOrder === "Deadline Terjauh") {
-      results = sort(results).desc((x) => x.deadlineUnix);
+      results = sort(results).desc((x) => x.deadline);
     } else if (sortOrder === "Paling Baru") {
-      results = sort(results).asc((x) => dayjs(x.upload_date).unix());
+      results = sort(results).desc((x) => x.upload_date);
     } else if (sortOrder === "Paling Lama") {
-      results = sort(results).desc((x) => dayjs(x.upload_date).unix());
+      results = sort(results).asc((x) => x.upload_date);
     } else {
       setSortOrder("Deadline Terdekat");
     }
     setFilteredData(results);
-  }, [data, searchTerm, selectedCategories, sortOrder]);
-
-  const cards = filteredData.map((item) => (
-    <CardLomba
-      id={item.id}
-      key={item.id}
-      image={item.image}
-      name={item.name}
-      organizer={item.organizer}
-      category={item.category}
-      deadline={item.deadline}
-      deadlineUnix={item.deadlineUnix}
-      url={item.url}
-      description={item.description}
-      upload_date={item.upload_date}
-    />
-  ));
+  }, [competition, searchTerm, selectedCategories, sortOrder]);
 
   const filterFull = matcheslg ? (
     <Grid.Col span="content">
@@ -120,7 +104,15 @@ export default function InfoLomba() {
               spacing="xs"
               verticalSpacing="xs"
             >
-              {cards}
+              <Suspense fallback={<div>Loading...</div>}>
+                {filteredData.map(
+                  (item: JSX.IntrinsicAttributes & CompetitionSimple) => (
+                    <Await key={item.id} resolve={filteredData}>
+                      <CardLomba key={item.id} {...item} />
+                    </Await>
+                  ),
+                )}
+              </Suspense>
             </SimpleGrid>
           </Grid.Col>
         </Grid>

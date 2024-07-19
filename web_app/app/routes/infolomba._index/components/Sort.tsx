@@ -64,6 +64,7 @@ export function Sort({
         combobox.toggleDropdown();
       }}
       value={sortOrder}
+      aria-label="sort"
     >
       {value || <Input.Placeholder>Urutkan</Input.Placeholder>}
     </InputBase>
@@ -75,6 +76,7 @@ export function Sort({
       onClick={() => {
         combobox.toggleDropdown();
       }}
+      aria-label="sort"
     >
       <IconArrowsSort stroke={1.5} />
     </ActionIcon>
