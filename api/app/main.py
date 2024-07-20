@@ -1,4 +1,5 @@
 import firebase_admin
+from firebase_admin import firestore_async
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_redoc_html
