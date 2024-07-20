@@ -1,3 +1,4 @@
+from pydoc import doc
 import random
 import re
 import string
@@ -10,7 +11,7 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 from PIL import Image
 import requests
 
-from app.config import HARDCODED_SECRET, FirebaseConfig, R2Config, firebase
+from app.config import HARDCODED_SECRET, FirebaseConfig, R2Config
 from app.config.cloudflareR2 import r2
 from app.config.gemini import get_competition_data
 from app.func.infolomba import (
@@ -46,18 +47,19 @@ router = APIRouter(
 )
 async def read_home() -> OkResponseCompetitionArr:
     now = datetime.now(timezone.utc)
+    field_filter = FieldFilter("deadline", ">=", now)
 
-    # Perform Firestore query
-    docs = (
-        firestore.client()
+    query = (
+        firestore_async.client()
         .collection(FirebaseConfig.COLLECTION_INFOLOMBA)
-        .where("deadline", ">=", now)
+        .where(filter=field_filter)
         .order_by("deadline")
-        .stream()
     )
-
-    competitions = [CompetitionSimple(**doc.to_dict()) for doc in docs]
-    competition_arr = CompetitionArr(root=competitions)
+    docs = query.stream()
+    competition_arr = []
+    async for doc in docs:
+        competition = CompetitionSimple(**doc.to_dict())
+        competition_arr.append(competition)
 
     return OkResponseCompetitionArr(
         success=True,
