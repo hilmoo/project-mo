@@ -1,15 +1,22 @@
 import { Outlet } from "@remix-run/react";
+import { useMemo, memo } from "react";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
-export default function infolomba() {
+const MemoizedHeader = memo(Header);
+const MemoizedFooter = memo(Footer);
+
+export default function Infolomba() {
+  const header = useMemo(() => <MemoizedHeader />, []);
+  const footer = useMemo(() => <MemoizedFooter />, []);
+
   return (
     <>
-      <Header />
-      <div style={{ minHeight: "75vh" }}>
+      {header}
+      <div className="content">
         <Outlet />
       </div>
-      <Footer />
+      {footer}
     </>
   );
 }

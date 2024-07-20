@@ -3,7 +3,7 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Await, useLoaderData } from "@remix-run/react";
 import { sort } from "fast-sort";
 import { matchSorter } from "match-sorter";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { CardLomba } from "./components/Card";
 import { Filter } from "./components/Filter";
@@ -19,49 +19,43 @@ import { meta as homeMeta } from "./meta";
 export { homeLoader as loader, homeMeta as meta };
 
 export default function InfoLomba() {
-  const { categoryArray, competition } = useLoaderData<typeof loader>();
+  const { competition } = useLoaderData<typeof loader>();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
   const matcheslg = useMediaQuery("(min-width: 75em)");
 
-  const [filteredData, setFilteredData] = useState<CompetitionSimple[]>([]);
+  const [filteredData, setFilteredData] = useState(competition);
   useEffect(() => {
-    const filterData = async () => {
-      if (!competition) return;
+    let results = competition;
 
-      let results = competition;
+    if (searchTerm) {
+      results = matchSorter(results, searchTerm, {
+        keys: ["name"],
+      });
+    }
 
-      if (searchTerm) {
-        results = matchSorter(results, searchTerm, {
-          keys: ["name"],
+    if (selectedCategories.length > 0) {
+      selectedCategories.forEach((category) => {
+        results = matchSorter(results, category, {
+          keys: ["category.*.name"],
         });
-      }
+      });
+    }
 
-      if (selectedCategories.length > 0) {
-        selectedCategories.forEach((category) => {
-          results = matchSorter(results, category, {
-            keys: ["category.*.name"],
-          });
-        });
-      }
-
-      if (sortOrder === "Deadline Terdekat") {
-        results = sort(results).asc((x) => x.deadline);
-      } else if (sortOrder === "Deadline Terjauh") {
-        results = sort(results).desc((x) => x.deadline);
-      } else if (sortOrder === "Paling Baru") {
-        results = sort(results).desc((x) => x.upload_date);
-      } else if (sortOrder === "Paling Lama") {
-        results = sort(results).asc((x) => x.upload_date);
-      } else {
-        setSortOrder("Deadline Terdekat");
-      }
-      setFilteredData(results);
-    };
-
-    filterData();
+    if (sortOrder === "Deadline Terdekat") {
+      results = sort(results).asc((x) => x.deadline);
+    } else if (sortOrder === "Deadline Terjauh") {
+      results = sort(results).desc((x) => x.deadline);
+    } else if (sortOrder === "Paling Baru") {
+      results = sort(results).desc((x) => x.upload_date);
+    } else if (sortOrder === "Paling Lama") {
+      results = sort(results).asc((x) => x.upload_date);
+    } else {
+      setSortOrder("Deadline Terdekat");
+    }
+    setFilteredData(results);
   }, [competition, searchTerm, selectedCategories, sortOrder]);
 
   const filterFull = matcheslg ? (
@@ -95,35 +89,33 @@ export default function InfoLomba() {
             <Grid.Col span={{ base: "content", lg: 2 }}>
               <Sort sortOrder={sortOrder} setSortOrder={setSortOrder} />
             </Grid.Col>
-            <Grid.Col span="content" hidden={matcheslg && true}>
-              <Await resolve={categoryArray}>
-                {matcheslg ? null : <FilterSmall open={open} />}
-              </Await>
-            </Grid.Col>
+            {!matcheslg && (
+              <Grid.Col span="content">
+                <FilterSmall open={open} />
+              </Grid.Col>
+            )}
           </Grid>
         </Container>
       </Container>
       <Container size="xxl" maw={2000}>
-        <Grid>
-          <Await resolve={categoryArray}>{filterFull}</Await>
-          <Grid.Col span="auto">
-            <SimpleGrid
-              cols={{ base: 1, sm: 2, md: 3, lg: 3, xl: 4 }}
-              spacing="xs"
-              verticalSpacing="xs"
-            >
-              <Suspense fallback={<div>Loading...</div>}>
-                <Await resolve={competition}>
-                  {filteredData.map(
-                    (item: JSX.IntrinsicAttributes & CompetitionSimple) => (
-                      <CardLomba key={item.id} {...item} />
-                    ),
-                  )}
-                </Await>
-              </Suspense>
-            </SimpleGrid>
-          </Grid.Col>
-        </Grid>
+        <Await resolve={competition}>
+          <Grid>
+            {filterFull}
+            <Grid.Col span="auto">
+              <SimpleGrid
+                cols={{ base: 1, sm: 2, md: 3, lg: 3, xl: 4 }}
+                spacing="xs"
+                verticalSpacing="xs"
+              >
+                {filteredData.map(
+                  (item: JSX.IntrinsicAttributes & CompetitionSimple) => (
+                    <CardLomba key={item.id} {...item} />
+                  ),
+                )}
+              </SimpleGrid>
+            </Grid.Col>
+          </Grid>
+        </Await>
       </Container>
     </>
   );
