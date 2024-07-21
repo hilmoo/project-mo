@@ -11,7 +11,7 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 from PIL import Image
 import requests
 
-from app.config import HARDCODED_SECRET, FirebaseConfig, R2Config
+from app.config import FILEE, HARDCODED_SECRET, FirebaseConfig, R2Config, USERNAME
 from app.config.cloudflareR2 import r2
 from app.config.gemini import get_competition_data
 from app.func.infolomba import (
@@ -23,7 +23,6 @@ from app.func.infolomba import (
 from app.models.infolomba import (
     Category,
     Competition,
-    CompetitionArr,
     CompetitionForm,
     CompetitionGemini,
     CompetitionSimple,
@@ -269,6 +268,7 @@ async def import_competition(
         ).model_dump()
 
     L = instaloader.Instaloader()
+    L.load_session_from_file(USERNAME, FILEE)
     short_ig = short_ig_url(url_ig)
     try:
         post = instaloader.Post.from_shortcode(L.context, short_ig)

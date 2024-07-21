@@ -8,6 +8,8 @@ PROD_ORIGINS = os.getenv("PROD_ORIGINS")
 TURNSTILE_SECRET_KEY = os.getenv("TURNSTILE_SECRET_KEY")
 HARDCODED_SECRET = os.getenv("HARDCODED_SECRET")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+USERNAME = os.getenv("USERNAME")
+FILEE = os.path.join(os.path.dirname(__file__), "filee")
 
 class FirebaseConfig:
     FIREBASE_TYPE = os.getenv("FIREBASE_type")
